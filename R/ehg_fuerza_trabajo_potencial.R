@@ -38,17 +38,32 @@
 #'
 #' @examples
 #' \dontrun{
-#'   enhogar <- ehg_fuerza_trabajo_potencial(enhogar)
+#' enhogar <- ehg_fuerza_trabajo_potencial(enhogar)
 #' }
-ehg_fuerza_trabajo_potencial <- function(tbl, min_edad = 15, max_edad = Inf){
+ehg_fuerza_trabajo_potencial <- function(tbl, min_edad = 15, max_edad = Inf) {
+  edition <- get_enhogar_edition(tbl)
+  if (edition == 2022) {
+    var01 <- "P508"
+    var02 <- "P510"
+    var03 <- "P511"
+  } else if (edition == 2021) {
+    var01 <- "H708"
+    var02 <- "H710"
+    var03 <- "H711"
+  } else if (edition == 2018) {
+    var01 <- "H507"
+    var02 <- "H509"
+    var03 <- "H510"
+  }
+
   tbl %>%
     ehg_pea(min_edad, max_edad) %>%
     dplyr::mutate(
       fuerza_trabajo_potencial = dplyr::case_when(
         pea == 1 ~ 0,
-        pet == 1 & H507 == 1 & H510 == 2 ~ 1,
-        pet == 1 & H507 == 2 & H510 == 1 ~ 1,
-        pet == 1 & H507 == 2 & H510 == 2 & H509 == 1 ~ 1
+        pet == 1 & !!as.symbol(var01) == 1 & !!as.symbol(var03) == 2 ~ 1,
+        pet == 1 & !!as.symbol(var01) == 2 & !!as.symbol(var03) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var01) == 2 & !!as.symbol(var03) == 2 & !!as.symbol(var02) == 1 ~ 1
       )
     )
 }

@@ -48,13 +48,86 @@ remotes::install_github("endomer-py/enhogar")
  
 ## Roadmap
 
-1. Completar el diccionario. (2018 completo)
 
 ```{r echo=FALSE, message=FALSE}
 source("data-raw/dict18.R")
-Dmisc::progress_bar(length(dict18), 450+length(dict181))
-rm(dict18, dict180, dict181)
+source("data-raw/dict22.R")
+source("data-raw/dict21.R")
+source("data-raw/dict19.R")
+source("data-raw/dict17.R")
+source("data-raw/dict16.R")
+# source("data-raw/dict15.R")
+# source("data-raw/dict14.R")
+# source("data-raw/dict13.R")
+# source("data-raw/dict12.R")
+# source("data-raw/dict11.R")
+# source("data-raw/dict09_10.R")
+# source("data-raw/dict08.R")
+# source("data-raw/dict07.R")
+# source("data-raw/dict06.R")
+# source("data-raw/dict05.R")
+v2022 <- 57 + 57 + 507
+v2021 <- 78 + 77 + 79
+v2019 <- 298 + 70 + 49 + 413 + 163 + 479
+v2018 <- 90 + 77 + 306
+v2017 <- 0
+v2016 <- 0
+v2015 <- 0
+v2014 <- 0
+v2013 <- 0
+v2012 <- 0
+v2011 <- 0
+v2009_10 <- 0
+v2008 <- 0
+v2007 <- 0
+v2006 <- 0
+v2005 <- 0
+
+ltotal = length(dict22) +
+  length(dict21) +
+  length(dict19) +
+  length(dict18) +
+#  length(dict17) +
+#  length(dict16) +
+#  length(dict15) +
+#  length(dict14) +
+#  length(dict13) +
+#  length(dict12) +
+#  length(dict11) +
+#  length(dict09_10) +
+#  length(dict08) +
+#  length(dict07) +
+#  length(dict06) +
+#  length(dict05) +
+  0
+
+vtotal = v2022 + v2021 + v2019 + v2018 + v2017 + v2016 + v2015 + v2014 + 
+  v2013 + v2012 + v2011 + v2009_10 + v2008 + v2007 + v2006 + v2005
+
+devtools::load_all("../../dnldelarosa/Dmisc/")
 ```
+
+1. Completar los diccionarios `r Dmisc:::progress_bar(ltotal/vtotal*100)`
+
+|Año    |Hogares    |Personas   |Módulo(s) especial(es)|Progreso general del año                                            |
+|-------|-----------|-----------|----------------------|--------------------------------------------------------------------|
+|2022   |Pendiente  |Pendiente  |Pendiente             |`r Dmisc:::progress_bar(length(dict22)/(v2022+length(dict221))*100)`|
+|2021   |En progreso|En progreso|Pendiente             |`r Dmisc:::progress_bar(length(dict21)/(v2021+length(dict211))*100)`|
+|2020   |NA         |NA         |NA                    |NA                                                                  |
+|2019   |Pendiente  |Pendiente  |Pendiente             |`r Dmisc:::progress_bar(length(dict19)/(v2019+length(dict191))*100)`|
+|2018   |Completo   |Completo   |Pendiente             |`r Dmisc:::progress_bar(length(dict18)/(v2018+length(dict181))*100)`|
+|2017   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict17)/(v2017+length(dict171))*100)|
+|2016   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict16)/(v2016+length(dict161))*100)|
+|2015   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict15)/(v2015+length(dict151))*100)|
+|2014   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict14)/(v2014+length(dict141))*100)|
+|2013   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict13)/(v2013+length(dict131))*100)|
+|2012   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict12)/(v2012+length(dict121))*100)|
+|2011   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict11)/(v2011+length(dict111))*100)|
+|2009-10|Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict09_10)/(v2009_10+length(dict091_101))*100)|
+|2008   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict08)/(v2008+length(dict081))*100)|
+|2007   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict07)/(v2007+length(dict071))*100)|
+|2006   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict06)/(v2006+length(dict061))*100)|
+|2005   |Pendiente  |Pendiente  |Pendiente             |r Dmisc:::progress_bar(length(dict05)/(v2005+length(dict051))*100)|
 
 2. Completar viñeta de uso básico de la librería.
 2. Agregar validadores a las funciones para garantizar que las variables son del tipo y con el contenido esperado en los cálculos.
@@ -74,6 +147,6 @@ Ten en cuenta que el proyecto `enhogar` está sujeto a un [Código del contribuy
 <hr/>
 
 ```{r echo=FALSE}
-Dmisc::big_button("Guía de inicio rápido", "./articles/enhogar.html")
+Dmisc:::big_button("Guía de inicio rápido", "./articles/enhogar.html")
 ```
 

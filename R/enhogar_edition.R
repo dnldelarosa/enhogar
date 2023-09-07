@@ -10,14 +10,18 @@
 #'
 #' @examples
 #' \dontrun{
-#'  enhogar_edition(2019)
+#' enhogar_edition(2019)
 #' }
-enhogar_edition <- function(year) {
-  if(!is.null(year)) {
-  if (year < 2005) {
-    cli::cli_alert_info("ENHOGAR solo est\u00e1 disponible a partir de 2005.")
-  }
-  options("ENHOGAR_EDITION", year)
+enhogar_edition <- function(year = NULL) {
+  if (!is.null(year)) {
+    if (year < 2005) {
+      message(
+        cli::cli_alert_info("ENHOGAR solo est\u00e1 disponible a partir de 2005.")
+      )
+    }
+    options("ENHOGAR_EDITION" = as.character(year))
+  } else {
+    getOption("ENHOGAR_EDITION")
   }
 }
 
@@ -34,12 +38,12 @@ enhogar_edition <- function(year) {
 #'
 #' @examples
 #' \dontrun{
-#'  get_enhogar_edition()
+#' get_enhogar_edition()
 #' }
 get_enhogar_edition <- function(tbl = NULL) {
   edition <- getOption("ENHOGAR_EDITION")
   if (is.null(edition)) {
-    if(is.null(tbl)){
+    if (is.null(tbl)) {
       tbl <- data.frame(
         Hola = c(1, 2),
         Mundo = c(1, 2)
@@ -67,12 +71,16 @@ get_enhogar_edition <- function(tbl = NULL) {
 #' }
 guess_enhogar_edition <- function(tbl) {
   edition <- NULL
-  if (!("HANO" %in% dplyr::tbl_vars(tbl))) {
-    cli::cli_alert_danger("No se ha podido determinar la edici\u00f3n de la encuesta que est\u00e1 en uso.")
-    cli::cli_bullets(c("*" = "Utiliza enhogar_edition() para establecer la edici\u00f3n."))
-    return()
+  if ("HANO" %in% dplyr::tbl_vars(tbl)) {
+    edition <- as.numeric(max(tbl[["HANO"]], na.rm = TRUE))
   } else {
-    edition <- as.numeric(max(tbl[["HANO"]]))
+    stop(
+      paste(
+        cli::cli_alert_danger("No se ha podido determinar la edici\u00f3n de la encuesta que est\u00e1 en uso."),
+        cli::cli_bullets(c("*" = "Utiliza enhogar_edition() para establecer la edici\u00f3n.")),
+        sep = "\n"
+      )
+    )
   }
   edition
 }

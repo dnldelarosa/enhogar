@@ -21,14 +21,15 @@
 #'
 #' @examples
 #' \dontrun{
-#'   enhogar <- ehg_pea(enhogar)
+#' enhogar <- ehg_pea(enhogar)
 #' }
-ehg_pea <- function(tbl, min_edad = 15, max_edad = Inf){
+ehg_pea <- function(tbl, min_edad = 15, max_edad = Inf) {
   tbl %>%
     ehg_desocupado(min_edad, max_edad) %>%
     dplyr::mutate(
       pea = dplyr::case_when(
-        ocupado + desocupado == 1 ~ 1,
+        ocupado == 1 ~ 1,
+        desocupado == 1 ~ 1,
         pet == 1 ~ 0
       )
     )

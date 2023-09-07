@@ -16,12 +16,20 @@
 #'
 #' @examples
 #' \dontrun{
-#'   enhogar <- ehg_pet(enhogar)
+#' enhogar <- ehg_pet(enhogar)
 #' }
-ehg_pet <- function(tbl, min_edad = 15, max_edad = Inf){
-  H203 <- NULL
+ehg_pet <- function(tbl, min_edad = 15, max_edad = Inf) {
+  edition <- get_enhogar_edition(tbl)
+  if (edition == 2022) {
+    var01 <- "P203"
+  } else if (edition == 2021) {
+    var01 <- "H303"
+  } else if (edition == 2018) {
+    var01 <- "H203"
+  }
+
   tbl %>%
     dplyr::mutate(
-      pet = dplyr::if_else(dplyr::between(H203, min_edad, max_edad), 1, 0)
+      pet = dplyr::if_else(dplyr::between(!!as.symbol(var01), min_edad, max_edad), 1, 0)
     )
 }

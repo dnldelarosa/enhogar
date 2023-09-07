@@ -22,19 +22,42 @@
 #'
 #' @examples
 #' \dontrun{
-#'   enhogar <- ehg_ocupado(enhogar)
+#' enhogar <- ehg_ocupado(enhogar)
 #' }
-ehg_ocupado <- function(tbl, min_edad = 15, max_edad = Inf){
+ehg_ocupado <- function(tbl, min_edad = 15, max_edad = Inf) {
+  edition <- get_enhogar_edition(tbl)
+  if (edition == 2022) {
+    var01 <- "P501"
+    var02 <- "P502"
+    var03 <- "P503"
+    var04 <- "P504"
+    var05 <- "P505"
+    var06 <- "P506"
+  } else if (edition == 2021) {
+    var01 <- "H701"
+    var02 <- "H702"
+    var03 <- "H703"
+    var04 <- "H704"
+    var05 <- "H705"
+    var06 <- "H706"
+  } else if (edition == 2018) {
+    var01 <- "H501"
+    var02 <- "H502"
+    var03 <- "H503"
+    var04 <- "H504"
+    var05 <- "H505"
+    var06 <- "H506"
+  }
   tbl %>%
     ehg_pet(min_edad, max_edad) %>%
     dplyr::mutate(
       ocupado = dplyr::case_when(
-        pet == 1 & H501 == 1 ~ 1,
-        pet == 1 & H502 == 1 ~ 1,
-        pet == 1 & H503 == 1 ~ 1,
-        pet == 1 & H504 == 1 ~ 1,
-        pet == 1 & H505 == 1 ~ 1,
-        pet == 1 & H506 == 1 ~ 1,
+        pet == 1 & !!as.symbol(var01) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var02) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var03) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var04) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var05) == 1 ~ 1,
+        pet == 1 & !!as.symbol(var06) == 1 ~ 1,
         pet == 1 ~ 0
       )
     )

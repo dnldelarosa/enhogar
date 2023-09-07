@@ -17,30 +17,46 @@
 #'
 #' @examples
 #' \dontrun{
-#'   ehg18 <- data.frame(ZONA = c(1, 2))
-#'   str(ehg18)
-#'   str(ehg_set_labels(ehg18))
-#'}
-ehg_set_labels <- function(tbl, vars = NULL) {
-    labeler::use_labels(
-      tbl,
-      eval(
+#' ehg18 <- data.frame(ZONA = c(1, 2))
+#' str(ehg18)
+#' str(ehg_set_labels(ehg18))
+#' }
+ehg_set_labels <- function(tbl, vars = NULL, .year = NULL) {
+  if (is.null(.year)) {
+    edition <- get_enhogar_edition(tbl)
+  } else {
+    edition <- get_enhogar_edition(data.frame(HANO = .year))
+  }
+  dict <- NULL
+  tryCatch(
+    {
+      dict <- eval(
         parse(
           text = paste0(
             "enhogar::dict",
-            stringr::str_sub(as.character(get_enhogar_edition()), 3, 4)
+            stringr::str_sub(as.character(edition), 3, 4)
           )
         )
-      ),
-      vars
-    )
+      )
+    },
+    error = function(e) {
+      warning(
+        cli::cli_alert_danger("Este diccionario no ha sido implementado.")
+      )
+    }
+  )
+  labeler::use_labels(
+    tbl,
+    dict,
+    vars
+  )
 }
 
 
 #' @rdname ehg_set_labels
 #' @export
 ehg_setLabels <- function(tbl, vars = NULL) {
-  lifecycle::deprecate_warn('0.1.0', 'ehg_setLabels()', 'ehg_set_labels()')
+  lifecycle::deprecate_warn("0.1.0", "ehg_setLabels()", "ehg_set_labels()")
   ehg_set_labels(tbl, vars)
 }
 
@@ -60,22 +76,37 @@ ehg_setLabels <- function(tbl, vars = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#'   ehg18 <- data.frame(ZONA = c(1, 2))
-#'   ehg18
-#'   ehg_use_labels(ehg18)
-#'}
-ehg_use_labels <- function(tbl, vars = NULL) {
-  edition <- get_enhogar_edition()
-  labeler::use_labels(
-    tbl,
-    eval(
-      parse(
-        text = paste0(
-          "enhogar::dict",
-          stringr::str_sub(as.character(edition), 3, 4)
+#' ehg18 <- data.frame(ZONA = c(1, 2))
+#' ehg18
+#' ehg_use_labels(ehg18)
+#' }
+ehg_use_labels <- function(tbl, vars = NULL, .year = NULL) {
+  if (is.null(.year)) {
+    edition <- get_enhogar_edition(tbl)
+  } else {
+    edition <- get_enhogar_edition(data.frame(HANO = .year))
+  }
+  dict <- NULL
+  tryCatch(
+    {
+      dict <- eval(
+        parse(
+          text = paste0(
+            "enhogar::dict",
+            stringr::str_sub(as.character(edition), 3, 4)
+          )
         )
       )
-    ),
+    },
+    error = function(e) {
+      warning(
+        cli::cli_alert_danger("Este diccionario no ha sido implementado.")
+      )
+    }
+  )
+  labeler::use_labels(
+    tbl,
+    dict,
     vars
   )
 }
@@ -84,6 +115,16 @@ ehg_use_labels <- function(tbl, vars = NULL) {
 #' @rdname ehg_use_labels
 #' @export
 ehg_useLabels <- function(tbl, vars = NULL) {
-  lifecycle::deprecate_warn('0.1.0', 'ehg_useLabels()', 'ehg_use_labels()')
+  lifecycle::deprecate_warn("0.1.0", "ehg_useLabels()", "ehg_use_labels()")
   ehg_use_labels(tbl, vars)
 }
+
+
+
+# Esta no es buena idea. Porque las variables hasta cambian de nombre entre una encuesta y otra.
+# ehg_use_group_labels <- function(tbl, vars = NULL) {
+#  tbl |>
+#    split(~HANO) |>
+#    purrr::map(~ehg_use_labels(.x)) |>
+#    dplyr::bind_rows()
+# }
